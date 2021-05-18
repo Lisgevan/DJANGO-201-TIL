@@ -1,11 +1,16 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.db.models.fields import DateTimeField
+
 
 # Create your models here.
 
 class Post(models.Model):
     text = models.CharField(max_length=240)
-    date = DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self) -> str:
         return self.text[0:100]

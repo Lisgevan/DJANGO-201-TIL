@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
+{% load thumbnail %}
 
 {% block title %}Homepage{% endblock title %}
 
 {% block body %}
+
 
 <!-- component -->
     {% for post in posts %}
@@ -23,8 +25,10 @@
                 <div>
                     {# TODO==> Add user's links to bio/photo and add thumbnail and name #}
                     <a class="flex items-center" href="#">
-                        <img class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block" src="https://images.unsplash.com/photo-1502980426475-b83966705988?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=373&q=80" alt="avatar">
-                        <h1 class="text-gray-700 font-bold">Khatab wedaa</h1>
+                        {% thumbnail post.author.profile.image "100x100" crop="center" as im %}
+                            <img class="mx-4 w-10 h-10 object-cover rounded-full hidden sm:block" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+                        {% endthumbnail %}
+                        <h1 class="text-gray-700 font-bold">{{ post.author.username }}</h1>
                     </a>
                 </div>
             </div>
