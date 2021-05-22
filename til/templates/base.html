@@ -28,7 +28,7 @@
         </li>
         {% if request.user.is_authenticated %}
             <li>
-                <a href="{% url 'feed:new_post' %}" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800">
+                <a href="{% url 'feed:new_post' %}" class="flex flex-row items-center h-12 transform hover:translate-x-2 transition-transform ease-in duration-200 text-gray-500 hover:text-gray-800 js-toggle-modal">
                 <span class="inline-flex items-center justify-center h-12 w-12 text-lg text-gray-400"><i class="bx bx-layer-plus"></i></span>
                 <span class="text-sm font-medium">New post</span>
                 </a>
@@ -70,9 +70,10 @@
                     </svg>
                 </div>
             <hr>
-            <div class="">
-                {# TODO: Add the ajax form #}
+            <div class="w-full">
+                <textarea rows="3" class="border-2 border-blue-500 my-4 w-full js-post-text" placeholder="Enter your post" maxlennth="240" data-post-url="{% url 'feed:new_post' %}"></textarea>
             </div>
+
             <hr>
             <div class="ml-auto">
                 <button class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-1 px-3 inline-flex items-center test-sm mt-4 js-submit" type="button">

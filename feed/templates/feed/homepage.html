@@ -4,10 +4,11 @@
 
 {% block body %}
 
-
-<!-- component -->
-    {% for post in posts %}
-        {% include "includes/post.html" with post=post show_detail_view=True %}
-    {% endfor %}
+    <div id="posts-container">
+        <!-- component -->
+        {% for post in posts %}
+            {% include "includes/post.html" with post=post show_detail_link=True %}
+        {% endfor %}
+    </div>
 
 {% endblock body %}
