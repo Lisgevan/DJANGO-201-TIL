@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     #MY APPS
     'feed',
     'profiles',
+    'followers',
 
     #3rd PARTY
     'allauth',
