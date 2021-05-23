@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'sorl.thumbnail', 
+    'sorl.thumbnail',
+    'widget_tweaks', 
 ]
 
 MIDDLEWARE = [
@@ -163,6 +164,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "allauth.account.auth_backends.AuthenticationBackend"
 )
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 STATICFILES_DIRS = [
     os.path.join(PROJECT_DIR, "frontend/")

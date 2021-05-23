@@ -8,6 +8,7 @@ django = "*"
 django-allauth = "*"
 sorl-thumbnail = "*"
 pillow = "*"
+django-widget-tweaks = "*"
 
 [dev-packages]
 

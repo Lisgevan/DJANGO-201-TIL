@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -24,7 +25,7 @@ class HomePageView(TemplateView):
             if not following:
                 posts = Post.objects.all().order_by('-id')[0:30]
             else:
-                posts = Post.objects.filter(author__in=following).order_by('-id')[0:60]
+                posts = (Post.objects.filter(author__in=following)|Post.objects.filter(author=self.request.user)).order_by('-id')[0:60]
         else:
             posts = Post.objects.all().order_by('-id')[0:30]
         context['posts'] = posts
