@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block title %}My posts{% endblock title %}
+
+{% block body %}
+
+    <div id="posts-container">
+        <!-- component -->
+        
+        {% if total_posts == 0 %}
+            <div class="m-4">
+                <p>{{ request.user }} you have {{ total_posts }} posts.</p>
+                <p>Please add things you learnt to see the list of them here.</p>   
+            </div>
+        {% else %}
+            {% for post in posts %}
+                {% include "includes/post.html" with post=post show_detail_link=True %}
+            {% endfor %}
+        {% endif %}
+            
+    </div>
+
+{% endblock body %}

@@ -13,4 +13,4 @@ class Post(models.Model):
     )
 
     def __str__(self) -> str:
-        return self.text[0:100]
+        return f'{self.text[0:100]} - by - {self.author}'

@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,16 +17,45 @@ class HomePageView(TemplateView):
     
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
-        if self.request.user.is_authenticated:
-            following = list(
-                Follower.objects.filter(followed_by=self.request.user).values_list('following', flat = True)
-            )
-            if not following:
-                posts = Post.objects.all().order_by('-id')[0:30]
-            else:
-                posts = (Post.objects.filter(author__in=following)|Post.objects.filter(author=self.request.user)).order_by('-id')[0:60]
-        else:
+        posts = Post.objects.all().order_by('-id')[0:30]
+        context['posts'] = posts
+        return context
+
+class UserPosts(TemplateView):
+    http_method_names = ["get"]
+    template_name = "feed/myposts.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        userposts = Post.objects.filter(author=self.request.user)
+        if userposts.count() != 0:
+            posts = userposts.order_by('-id')[0:60]
+            context['posts'] = posts
+        return context
+        
+class FollowedByPosts(TemplateView):
+    http_method_names = ["get"]
+    template_name = "feed/followedby.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        following = list(
+            Follower.objects.filter(followed_by=self.request.user).values_list('following', flat = True)
+        )
+        if not following:
             posts = Post.objects.all().order_by('-id')[0:30]
+        else:
+            posts = Post.objects.filter(author__in=following).order_by('-id')[0:60]
         context['posts'] = posts
         return context
     
