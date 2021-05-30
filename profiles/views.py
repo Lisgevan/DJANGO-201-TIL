@@ -1,10 +1,14 @@
 from django.contrib.auth.models import User
 from django.views.generic import DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponseBadRequest
+from django.http import JsonResponse, HttpResponseBadRequest, request
+from django.views.generic import UpdateView
+from django.shortcuts import render
+from django.urls import reverse_lazy
 
-from feed.models import Post
+
 from followers.models import  Follower
+from .models import Profile
 
 class ProfileDetailView(DetailView):
     http_method_names = ['get']
@@ -13,21 +17,6 @@ class ProfileDetailView(DetailView):
     context_object_name = "user"
     slug_field = "username"
     slug_url_kwarg = "username"
-
-    def dispatch(self, request, *args, **kwargs):
-        self.request = request
-        return super().dispatch(request, *args, **kwargs)
-    
-
-    def get_context_data(self, **kwargs):
-        user = self.get_object()
-        context = super().get_context_data(**kwargs)
-        context['total_posts'] = Post.objects.filter(author=user).count()
-        context['total_followers'] = Follower.objects.filter(following=user).count()
-        context['total_following'] = Follower.objects.filter(followed_by=user).count()
-        if self.request.user.is_authenticated:
-            context['you_follow'] = Follower.objects.filter(following=user, followed_by=self.request.user).exists()
-        return context
     
 class FollowView(LoginRequiredMixin, View):
     http_method_names=['post']
@@ -66,3 +55,46 @@ class FollowView(LoginRequiredMixin, View):
             'success':True,
             'wording': "Unfollow" if data['action'] == "follow" else "Follow"
         })
+
+class UserProfileView(DetailView):
+    http_method_names = ['get']
+    template_name = "profiles/userprofile.html"
+    model = User
+    context_object_name = "user"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+
+
+class ManageProfileView(LoginRequiredMixin, UpdateView):
+    http_method_names = ['get', 'post']
+    template_name = "profiles/manageprofile.html"
+    model = User
+    context_object_name = "user"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    success_url ="../../{username}/profile"
+    fields = ['username', 'last_name', 'first_name', 'email']
+
+    if http_method_names == 'POST':
+        def dispatch(self, request, *args, **kwargs):
+            self.request = request
+            return super().dispatch(request, *args, **kwargs)
+        
+        def form_valid(self, form):
+            obj = form.save(commit=False)
+            obj.save()
+            # messages.success(request,'Your Profile has been updated!')
+            return super().form_valid(form)
+
+        def get_success_url(self):
+            return reverse_lazy('detail', kwargs={"username": self.request.user.username})
+
+class ChangeAvatarView(LoginRequiredMixin, UpdateView):
+    http_method_names = ['get', 'post']
+    template_name = "profiles/changeavatar.html"
+    model = Profile
+    context_object_name = "user"
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    success_url ="../../{username}/profile"
+    fields = ['image']

@@ -148,10 +148,10 @@
                         <span class="flex font-medium text-lg underline text-gray-300 px-4 my-4">ACCOUNT</span>
                     </li>
                     {% if request.user.is_authenticated %}
-                    {% comment %} UPDATE PROFILE {% endcomment %}
+                    {% comment %} MY PROFILE {% endcomment %}
                     <li class="my-px">
                         <a
-                        href="#"
+                        href="{% url 'profiles:profile' request.user.username %}"
                         class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
                         >
                         <span class="flex items-center justify-center text-lg text-gray-400">
@@ -170,7 +170,7 @@
                             <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </span>
-                        <span class="ml-3">UPDATE PROFILE</span>
+                        <span class="ml-3">MY PROFILE</span>
                         </a>
                     </li>
                     {% comment %} LOGOUT {% endcomment %}

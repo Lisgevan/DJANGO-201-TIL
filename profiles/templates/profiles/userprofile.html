@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load thumbnail %}
+
+
+{% block title %}{{ user.username }}{% endblock title %}
+
+{% block body %}
+
+<!-- component -->
+    {% comment %} <div class="rounded rounded-t-lg overflow-hidden shadow max-w-xs my-3">
+        <img src="https://i.imgur.com/dYcYQ7E.png" class="w-full" />
+        <div class="flex justify-center -mt-8">
+            {% thumbnail user.profile.image "100x100" crop="center" as im %}
+                <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+            {% endthumbnail %}
+        </div>
+        <div class="text-center px-3 pb-6 pt-2">
+            <h3 class="text-black text-sm bold font-sans">{{ user.username }} </h3>
+            
+            {% if request.user.is_authenticated %}
+                
+                {% if  request.user != user %}
+
+                    <div class="my-3">
+                        <button class="bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center js-follow" data-username="{{ user.username }}" data-action="{% if you_follow %}un{% endif %}follow" data-url="{% url 'profiles:follow' user.username %}" type="button">
+                        <span class="mr-2 js-follow-text">
+                            {% if you_follow %}
+                                Unfollow
+                            {% else %}
+                                Follow
+                            {% endif %}
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentcolor" d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"></path>
+                        </svg>
+                        </button>
+                    </div>
+                    
+                {% endif %}
+                    
+            {% else %}
+                <div class="mt-3 text-sm">Login to follow this user</div>    
+            {% endif %}
+                
+        </div>
+        <div class="flex justify-center pb-3 text-grey-dark">
+            <div class="text-center mr-3 border-r pr-3">
+                <h2>{{ total_posts }}</h2>
+                <span>Posts 2</span>
+            </div>
+            <div class="text-center mr-3 border-r pr-3">
+                <h2>{{ total_followers }}</h2>
+                <span>Followers 2</span>
+            </div>
+            <div class="text-center">
+                <h2>{{ total_following }}</h2>
+                <span>Following 2</span>
+            </div>
+        </div>
+    </div> {% endcomment %}
+
+    <!-- component -->
+<div class="my-10">
+    <div class="bg-white rounded overflow-hidden shadow-lg">
+        <div class="text-center p-6  border-b">
+            <div class="flex justify-center">
+                {% thumbnail request.user.profile.image "100x100" crop="center" as im %}
+                    <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+                {% endthumbnail %}
+            </div>
+            <p class="pt-2 text-lg font-semibold">{{ request.user.username }}</p>
+            <div class="flex justify-center py-3 text-grey-dark">
+                <div class="text-center mr-3 border-r pr-3">
+                    <h2>{{ total_posts }}</h2>
+                    <span>Posts</span>
+                </div>
+                <div class="text-center mr-3 border-r pr-3">
+                    <h2>{{ total_followers }}</h2>
+                    <span>Followers</span>
+                </div>
+                <div class="text-center">
+                    <h2>{{ total_following }}</h2>
+                    <span>Following</span>
+                </div>
+            </div>
+        </div>
+        <div class="border-b">
+            <a href="#" class="px-4 py-2 hover:bg-gray-100 flex">
+                <div class="text-gray-800">
+                    <svg
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    class="w-5 h-5"
+                    >
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    
+                </div>
+                <div class="pl-3">
+                    <p class="text-sm font-medium text-gray-800 leading-none pb-2">Last Name: {{ request.user.last_name }}</p>
+                    <p class="text-sm font-medium text-gray-800 leading-none">Name: {{ request.user.first_name }}</p>
+                </div>
+            </a>
+            <a href="#" class="px-4 py-2 hover:bg-gray-100 flex">
+                <div class="text-gray-800">
+                    <span class="flex items-center justify-center text-lg text-gray-800">
+                        <svg 
+                            class="w-5 h-5" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            viewBox="0 0 24 24" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round" 
+                            stroke-width="2"
+                            >
+                            <path  d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                    </span>
+                </div>
+                <div class="pl-3">
+                    <p class="text-sm font-medium text-gray-800 leading-none">E-mail</p>
+                    <p class="text-xs text-gray-500">{{ request.user.email}}</p>
+                </div>
+            </a>
+            <a href="#" class="px-4 py-2 hover:bg-gray-100 flex">
+                <div class="text-gray-800">
+                    <svg
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        class="h-5 w-5"
+                        >
+                            <path
+                            d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"
+                            />
+                    </svg>
+                </div>
+                <div class="pl-3">
+                    <p class="text-sm font-medium text-gray-800 leading-none">Date joined</p>
+                    <p class="text-xs text-gray-500">{{ request.user.date_joined }}</p>
+                </div>
+            </a>
+            <a href="#" class="px-4 py-2 hover:bg-gray-100 flex">
+                <div class="text-gray-800">
+                    <svg
+                        fill="none"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        class="h-5 w-5"
+                        >
+                        <path
+                            d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
+                        />
+                    </svg>
+                </div>
+                <div class="pl-3">
+                    <p class="text-sm font-medium text-gray-800 leading-none">Last login</p>
+                    <p class="text-xs text-gray-500">{{ request.user.last_login }}</p>
+                </div>
+            </a>
+        </div>
+    </div>
+    <div class="mt-5 text-center">
+        <a
+            href="{% url 'profiles:manage' user.username %}"
+            class="border rounded-full py-2 px-4 text-xs font-semibold text-gray-700 hover:bg-gray-100"
+        >
+            Manage your Account
+        </a>
+    </div>
+</div>
+
+{% endblock body %}

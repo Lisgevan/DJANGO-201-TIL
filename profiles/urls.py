@@ -7,4 +7,6 @@ app_name = "profiles"
 urlpatterns = [
     path('<str:username>/', views.ProfileDetailView.as_view(), name='detail'),
     path('<str:username>/follow/', views.FollowView.as_view(), name='follow'),
+    path('<str:username>/profile/', views.UserProfileView.as_view(), name='profile'),
+    path('<str:username>/manage/', views.ManageProfileView.as_view(), name='manage'),
 ]
