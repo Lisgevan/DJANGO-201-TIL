@@ -12,6 +12,8 @@
         <div class="flex justify-center -mt-8">
             {% thumbnail user.profile.image "100x100" crop="center" as im %}
                 <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+            {% empty %}
+                <img class="rounded-full border-solid border-white border-2 mt-3" src="{{user.profile.image.url}}" width="100" height="100" alt="avatar">
             {% endthumbnail %}
         </div>
         <div class="text-center px-3 pb-6 pt-2">

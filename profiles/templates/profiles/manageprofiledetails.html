@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load thumbnail %}
+{% load widget_tweaks %}
+{% load i18n %}
+
+
+{% block body %}
+
+    <!-- component -->
+    <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 px-4 py-8">
+        <div class="inline-flex bg-white rounded p-2 px-40 shadow-md mb-1 items-center">
+            <div class="items-center">
+                {% thumbnail request.user.profile.image "100x100" crop="center" as im %}
+                    <img class="rounded-full border-solid border-white border-2 mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+                {% empty %}
+                    <img class="rounded-full border-solid border-white border-2 mt-3" src="{{user.profile.image.url}}" width="100" height="100" alt="avatar">
+                {% endthumbnail %}
+            </div>
+            <span class="leading-10 text-gray-800 text-4xl font-bold ml-1">{{ request.user.username}}</span>
+        <div>
+    </div>
+    </div>
+
+
+    <div
+      class="rounded-md bg-white w-full max-w-sm sm:max-w-md border border-gray-200 shadow-md px-4 py-6 sm:p-8"
+    >
+    <div class="text-lg text-gray-600 my-4">Choose a new Avatar.</div>
+        <form method="post" action="{% url 'profiles:avatar' request.user.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="flex flex-col mb-6">
+                <label
+                    for="email"
+                    class="mb-1 text-xs sm:text-sm tracking-wide text-gray-600"
+                ></label>
+                <div class="relative">
+                    <div
+                        class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400"
+                        >
+                        <svg class="h-9 w-9"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+							<path fill="none" d="M19.521,7.267c-0.144-0.204-0.38-0.328-0.631-0.328h-3.582l-0.272-1.826c-0.055-0.379-0.379-0.656-0.76-0.656
+							H9.802l-0.39-0.891c-0.123-0.279-0.399-0.46-0.704-0.46H1.11c-0.222,0-0.434,0.096-0.58,0.264C0.385,3.537,0.319,3.76,0.349,3.981
+							l1.673,12.243c0,0,0,0,0,0.002v0.004c0.015,0.113,0.06,0.213,0.119,0.303c0.006,0.009,0.006,0.023,0.012,0.033
+							c0.012,0.016,0.033,0.024,0.046,0.04c0.054,0.065,0.114,0.118,0.185,0.161c0.027,0.018,0.051,0.035,0.078,0.048
+							c0.099,0.045,0.206,0.078,0.32,0.078h0.002l0,0h13.03c0.323,0,0.611-0.201,0.722-0.505l3.076-8.416
+							C19.698,7.735,19.663,7.474,19.521,7.267z M8.203,4.644l0.391,0.889c0.123,0.279,0.399,0.461,0.704,0.461h4.315l0.141,0.944H5.859
+							c-0.323,0-0.611,0.201-0.723,0.505l-2.011,5.505L1.992,4.644H8.203z M15.276,15.356H3.882l2.515-6.879H17.79L15.276,15.356z"></path>
+						</svg>
+                    </div>
+                    <div class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-400 w-full py-2 focus:outline-none focus:border-blue-400">
+                        {{ form.image }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex w-full">
+                <button
+                    type="submit"
+                    class="flex items-center justify-center focus:outline-none text-white text-sm sm:text-base bg-indigo-600 hover:bg-indigo-700 rounded py-2 w-full transition duration-150 ease-in"
+                    >
+                    <span class="mr-2 uppercase">Update my Avatar</span>
+                    <span>
+                        <svg
+                            class="h-6 w-6"
+                            fill="none"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            >
+                            <path d="M13 9l3 3m0 0l-3 3m3-3H8m13 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </span>
+                </button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+
+{% endblock body %}

@@ -1,9 +1,7 @@
 from django.contrib.auth.models import User
-from django.views.generic import DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import JsonResponse, HttpResponseBadRequest, request
-from django.views.generic import UpdateView
-from django.shortcuts import render
+from django.http import JsonResponse, HttpResponseBadRequest
+from django.views.generic import UpdateView, DetailView, View
 from django.urls import reverse_lazy
 
 
@@ -64,8 +62,7 @@ class UserProfileView(DetailView):
     slug_field = "username"
     slug_url_kwarg = "username"
 
-
-class ManageProfileView(LoginRequiredMixin, UpdateView):
+class ManageUserView(LoginRequiredMixin, UpdateView):
     http_method_names = ['get', 'post']
     template_name = "profiles/manageprofile.html"
     model = User
@@ -74,6 +71,37 @@ class ManageProfileView(LoginRequiredMixin, UpdateView):
     slug_url_kwarg = "username"
     success_url ="../../{username}/profile"
     fields = ['username', 'last_name', 'first_name', 'email']
+
+    if http_method_names == 'POST':
+
+        def dispatch(self, request, *args, **kwargs):
+            self.request = request
+            return super().dispatch(request, *args, **kwargs)
+        
+        def form_valid(self, form):
+            obj = form.save(commit=False)
+            print('test2')
+            print(form)
+            obj.save()
+            # messages.success(request,'Your Profile has been updated!')
+            return super().form_valid(form)
+
+        def get_success_url(self):
+            return reverse_lazy('detail', kwargs={"username": self.request.user.username})
+
+class ManageProfileView(LoginRequiredMixin, UpdateView):
+    http_method_names = ['get', 'post']
+    template_name = "profiles/manageprofiledetails.html"
+    model = Profile
+    # context_object_name = "user"
+    slug_field = "user_id" #{"username" :Profile.user}
+    slug_url_kwarg = "user_id"
+    success_url ="."#"./../{user_id}/profile"
+    fields = ['image']
+    # form_class = ProfileUpdateForm
+    print('test')
+    # print(Profile.user)
+    print('end test')
 
     if http_method_names == 'POST':
         def dispatch(self, request, *args, **kwargs):
@@ -86,15 +114,5 @@ class ManageProfileView(LoginRequiredMixin, UpdateView):
             # messages.success(request,'Your Profile has been updated!')
             return super().form_valid(form)
 
-        def get_success_url(self):
-            return reverse_lazy('detail', kwargs={"username": self.request.user.username})
-
-class ChangeAvatarView(LoginRequiredMixin, UpdateView):
-    http_method_names = ['get', 'post']
-    template_name = "profiles/changeavatar.html"
-    model = Profile
-    context_object_name = "user"
-    slug_field = "username"
-    slug_url_kwarg = "username"
-    success_url ="../../{username}/profile"
-    fields = ['image']
+        # def get_success_url(self):
+        #     return reverse_lazy('profile', kwargs={"user_id": self.request.user.username})
