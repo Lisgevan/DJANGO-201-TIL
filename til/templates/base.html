@@ -18,9 +18,9 @@
 <body>
 
     <!-- component -->
-    <div class="flex flex-row min-h-screen bg-gray-100 text-gray-800">
+    <div class="flex flex-row min-h-screen text-gray-800 w-screen">
         <aside
-        class="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500"
+        class="sidebar w-64 md:shadow transform -translate-x-full sm:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500"
         >
             <div class="sidebar-header flex items-center justify-center py-4">
                 <div class="inline-flex">
@@ -250,71 +250,33 @@
                 </ul>
             </div>
         </aside>
-        <main class="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
+        <main class="main flex flex-col flex-grow -ml-64 sm:ml-0 transition-all duration-150 ease-in">
             <header class="header bg-white shadow py-4 px-4">
                 <div class="header-content flex items-center flex-row">
-                    {% comment %} SEARCH FORM {% endcomment %}
-                    {% comment %} <form action="#">
-                        <div class="hidden md:flex relative">
-                        <div
-                            class="inline-flex items-center justify-center absolute left-0 top-0 h-full w-10 text-gray-400"
-                        >
-                            <svg
-                            class="h-6 w-6"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </div>
-
-                        <input
-                            id="search"
-                            type="text"
-                            name="search"
-                            class="text-sm sm:text-base placeholder-gray-500 pl-10 pr-4 rounded-lg border border-gray-300 w-full h-10 focus:outline-none focus:border-indigo-400"
-                            placeholder="Search..."
-                        />
-                        </div>
-                        <div class="flex md:hidden">
-                        <a href="#" class="flex items-center justify-center h-10 w-10 border-transparent">
-                            <svg
-                            class="h-6 w-6 text-gray-500"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            >
-                            <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                            </svg>
-                        </a>
-                        </div>
-                    </form> {% endcomment %}
                     {% comment %} USER LOGED IN {% endcomment %}
                     <div class="flex ml-auto">
-                        <a href="#" class="flex flex-row items-center">
-                            {% thumbnail user.profile.image "100x100" crop="center" as im %}
-                                <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
-                            {% empty %}
-                                <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{user.profile.image.url}}" width="100" height="100" alt="avatar">
-                            {% endthumbnail %}
-                            <span class="flex flex-col ml-2">
-                                <span class="truncate w-auto font-semibold tracking-wide leading-none">{{ request.user.username }}</span>
-                            </span>
-                        </a>
+                        
+                        {% if request.user.is_authenticated %}
+                            <a href="#" class="flex flex-row items-center">
+                                {% thumbnail user.profile.image "100x100" crop="center" as im %}
+                                    <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}" alt="avatar">
+                                {% empty %}
+                                    <img class="rounded-full border-solid border-white border-2 -mt-3" src="{{user.profile.image.url}}" width="100" height="100" alt="avatar">
+                                {% endthumbnail %}
+                                <span class="flex flex-col ml-2">
+                                    <span class="truncate w-auto font-semibold tracking-wide leading-none">{{ request.user.username }}</span>
+                                </span>
+                            </a>
+                        {% endif %}
+                            
                     </div>
                 </div>
             </header>
             {% comment %} POST AREA {% endcomment %}
             <div class="main-content flex flex-col flex-grow p-4">
-                <h1 class="font-bold text-2xl text-gray-700">Things I Learnt!</h1>
-
+                <div class="flex m-auto">
+                    <h1 class="font-bold text-2xl text-gray-700">Things I Learnt!</h1>
+                </div>
                 <div
                 class="flex flex-col flex-grow border-4 border-gray-400 border-dashed bg-white rounded mt-4"
                 >

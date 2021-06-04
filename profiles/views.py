@@ -100,6 +100,7 @@ class ManageProfileView(LoginRequiredMixin, UpdateView):
     fields = ['image']
     # form_class = ProfileUpdateForm
     print('test')
+    
     # print(Profile.user)
     print('end test')
 
