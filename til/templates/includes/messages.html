@@ -1,0 +1,19 @@
+<div>
+    {% if messages %}
+        {% for message in messages %}
+            
+            {% if message.tags == 'info' %}
+                {% include 'includes/messages/info.html' %}
+            {% elif message.tags == 'success' %}
+                {% include 'includes/messages/success.html' %}
+            {% elif message.tags == 'warning' %}
+                {% include 'includes/messages/warning.html' %}
+            {% elif message.extra_tags == 'TILpost' %}
+                {% include 'includes/messages/success.html' %}
+            {% else %}
+                {% include 'includes/messages/danger.html' %}
+            {% endif %}
+                
+        {% endfor %}
+    {% endif %}
+</div>

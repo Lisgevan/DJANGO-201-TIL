@@ -2,6 +2,7 @@ from django.views.generic import DetailView, TemplateView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
+from django.contrib import messages
 
 from .models import Post
 from followers.models import Follower
@@ -88,7 +89,7 @@ class CreateNewPost(LoginRequiredMixin, CreateView):
             text = request.POST.get("text"),
             author = request.user,
         )
-
+        messages.add_message(self.request, messages.SUCCESS, 'Your post was successful', extra_tags='TILpost')
 
         return render(
             request,
