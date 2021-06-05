@@ -85,7 +85,6 @@ class ManageUserView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         def form_valid(self, form):
             obj = form.save(commit=False)
             obj.save()
-            # messages.success(self.request,'Your Profile has been updated!')
             return super().form_valid(form)
 
         def get_success_message(self, cleaned_data):
@@ -101,18 +100,11 @@ class ManageProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     http_method_names = ['get', 'post']
     template_name = "profiles/manageprofiledetails.html"
     model = Profile
-    # context_object_name = "user"
-    slug_field = "user_id" #{"username" :Profile.user}
+    slug_field = "user_id"
     slug_url_kwarg = "user_id"
-    success_url ="."#"./../{user_id}/profile"
+    success_url ="."
     fields = ['image']
     success_message = "Your Avatar has been updated!"
-
-    # form_class = ProfileUpdateForm
-    print('test')
-    
-    # print(Profile.user)
-    print('end test')
 
     if http_method_names == 'POST':
         def dispatch(self, request, *args, **kwargs):
@@ -122,7 +114,6 @@ class ManageProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         def form_valid(self, form):
             obj = form.save(commit=False)
             obj.save()
-            # messages.success(self.request,'Your Avatar has been updated!')            
             return super().form_valid(form)
 
         def get_success_message(self, cleaned_data):
@@ -130,5 +121,3 @@ class ManageProfileView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
                 cleaned_data,
                 calculated_field=self.object.calculated_field,
             )
-        # def get_success_url(self):
-        #     return reverse_lazy('profile', kwargs={"user_id": self.request.user.username})

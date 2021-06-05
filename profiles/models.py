@@ -7,7 +7,7 @@ from sorl.thumbnail import ImageField
 #TODO: Delete image file when user is deleted
 #TODO: Add functionality to delete user
 #TODO: Add functionality to change background image at the profile
-
+#TODO: Move reused code to includes
 # Create your models here.
 class Profile(models.Model):
     user = models.OneToOneField(
